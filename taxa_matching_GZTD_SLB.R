@@ -46,9 +46,11 @@ species.match <- taxonomy.GZTD %>%
 write.csv(species.match, row.names = F, na = "",
           file = "data/taxonomy_list_GZTD_20260910.csv")
 
-species.match %>% 
+no.match <- species.match %>% 
   filter(!is.na(SpecCode)) %>% 
-  nrow()
+  filter(GZTD_nrecords <= 2) %>% 
+  group_by(taxonRank, GZTD_nrecords) %>% 
+  count()
 
 species.match %>% 
   filter(is.na(SpecCode)) %>% 
